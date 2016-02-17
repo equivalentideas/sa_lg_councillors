@@ -29,3 +29,6 @@ PLATFORMS
 DEPENDENCIES
   parse-ruby-client
   scraperwiki!
+
+BUNDLED WITH
+   1.10.6
