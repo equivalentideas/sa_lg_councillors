@@ -9,6 +9,10 @@ Parse.init :application_id => "LvLKTxvA2LGOTJAXTZhblO4E1f04miKymXsHRGaO",
            :api_key        => "gOVgfFHKJviaYhujxhH7kc9T9KoFmsrjwLvlSEqo",
            :quiet          => true
 
+def parse_name(name)
+  name.split(",").reverse.join(" ").strip
+end
+
 def process_contacts(contacts)
   contacts.each do |contact|
     query = Parse::Query.new("council")
@@ -21,7 +25,7 @@ def process_contacts(contacts)
     email = renderedContent[/"mailto:([^"]+)"/, 1]
 
     record = {
-      "name" => contact["name"],
+      "name" => parse_name(contact["name"]),
       "position" => contact["position"],
       "updated_at" => contact["updatedAt"],
       "url" => contact["url"],
