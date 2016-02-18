@@ -13,6 +13,11 @@ def parse_name(name)
   name.split(",").reverse.join(" ").strip
 end
 
+def create_id(council, name)
+  components = council + "/" + name
+  components.downcase.gsub(" ","_")
+end
+
 def process_contacts(contacts)
   contacts.each do |contact|
     query = Parse::Query.new("council")
@@ -25,6 +30,7 @@ def process_contacts(contacts)
     email = renderedContent[/"mailto:([^"]+)"/, 1]
 
     record = {
+      "id" => create_id(council["name"], parse_name(contact["name"])),
       "name" => parse_name(contact["name"]),
       "position" => contact["position"],
       "updated_at" => contact["updatedAt"],
