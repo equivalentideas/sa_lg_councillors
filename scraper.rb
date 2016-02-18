@@ -13,9 +13,8 @@ def parse_name(name)
   name.split(",").reverse.join(" ").strip
 end
 
-def create_id(council, name)
-  components = council + "/" + name
-  components.downcase.gsub(" ","_")
+def format_as_id(string)
+  string.downcase.gsub(" ","_")
 end
 
 def process_contacts(contacts)
@@ -29,8 +28,12 @@ def process_contacts(contacts)
     # Crudely extract the email address.
     email = renderedContent[/"mailto:([^"]+)"/, 1]
 
+    councillor_id = parse_name(contact["name"])
+    councillor_id = councillor_id.prepend(council["name"] + "/") if council
+    councillor_id = format_as_id(councillor_id)
+
     record = {
-      "id" => create_id(council["name"], parse_name(contact["name"])),
+      "id" => councillor_id,
       "name" => parse_name(contact["name"]),
       "position" => contact["position"],
       "updated_at" => contact["updatedAt"],
